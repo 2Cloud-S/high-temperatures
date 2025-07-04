@@ -1,0 +1,76 @@
+---
+title: "High Temperatures"
+author: Afnan K
+execute:
+  echo: false
+  warning: false # Add this to hide any potential warnings
+---
+
+```{r setup}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(lubridate)
+
+```
+
+**In this analysis, we look at the daily maximum temperatures in Seattle from 1979 to the present.**
+
+```{r}
+#| label: create-plot
+#| fig-cap: "Daily maximum temperatures in Seattle, 1979-2025."
+
+# 1. LOAD PRE-PROCESSED DATA
+seattle_temps <- read_rds("seattle_daily_max_temps.rds")
+
+# 2. PREPARE DATA FOR PLOTTING
+plot_data <- seattle_temps %>%
+  filter(daily_max_f >= 20, daily_max_f <= 120) %>%
+  mutate(
+    category = if_else(day %in% as.Date(c("2021-06-26", "2021-06-27", "2021-06-28")),
+                       "Heatwave",
+                       "Normal")
+  )
+
+# 3. CREATE THE PLOT
+ggplot(plot_data, aes(x = day_of_year, y = daily_max_f)) +
+  geom_point(data = . %>% filter(category == "Normal"), color = "grey", alpha = 0.5) +
+  geom_point(data = . %>% filter(category == "Heatwave"), color = "#e34a33", size = 2.5) +
+  annotate(
+    geom = "text",
+    x = 180,
+    y = 112,
+    label = "Last 3 days",
+    color = "#e34a33",
+    fontface = "bold"
+  ) +
+  scale_y_continuous(
+    limits = c(20, 120),
+    breaks = seq(20, 120, by = 20),
+    name = "120 deg. Fahrenheit"
+  ) +
+  labs(
+    title = "Daily maximum temperatures in Seattle, 1979-2025",
+    x = NULL
+  ) +
+  theme_minimal(base_family = "sans") +
+  theme(
+    # General plot styling
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+
+    # UPDATED THEME SETTINGS FOR PROPER ALIGNMENT
+    
+    # 1. Position title relative to the whole plot, not just the panel
+    plot.title.position = "plot",
+    
+    # 2. Align the title text to the far left of the entire plot
+    plot.title = element_text(face = "bold", hjust = 0, size = 16),
+    
+    # 3. Adjust y-axis title safely
+    axis.title.y = element_text(hjust = 0.5, size = 9, color = "gray50")
+  )
+```

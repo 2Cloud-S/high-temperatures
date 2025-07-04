@@ -2,7 +2,7 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "High Temperatures",
+    "title": "About",
     "section": "",
     "text": "Project Overview\nThis site presents a visualization of the daily maximum temperatures in Seattle, Washington, from 1979 to the present. The goal is to explore the historical temperature range and identify significant weather events, such as the record-breaking heatwave in 2025.\nThe analysis involves fetching decades of hourly data, processing it to find daily maximums, and generating a scatter plot to reveal the annual temperature cycle and its outliers.\n\n\nTechnical Details\n\nData Source: The data is sourced from the NOAA Integrated Surface Database (ISD). It was accessed programmatically using the R programming language.\nTools Used:\n\nR: The primary language for data analysis and visualization.\nQuarto: The publishing system used to create this website from R code and markdown.\nworldmet: The R package used to import the raw hourly weather data from NOAA.\ntidyverse: A collection of R packages, including dplyr for data manipulation and ggplot2 for plotting.\nlubridate: The R package used for easier handling of dates and times."
   },
